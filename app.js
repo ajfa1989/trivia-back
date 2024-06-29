@@ -1,5 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 
 const app = express()
 const port = process.env.PORT
@@ -18,6 +19,47 @@ try {
   console.log('Database connected');
 } catch (error) {
   console.log('Error Database', error);
+}
+
+const user_schema = Schema({
+  name: {
+    type: String,
+    require: true
+  },
+  nickname: {
+    type: String,
+    require: true
+  },
+  cel:{
+    type: String,
+    require: true
+  },
+  password:{
+    type: String,
+    require: true
+  },
+  email:{
+    type: String
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  }
+})
+
+const user = model('user', user_schema)
+
+const first_user = new user({
+  name: 'Jhon',
+  nickname: 'jjatt',
+  cel:'3214567898',
+  password:'123'
+})
+
+try {
+  await first_user.save()
+} catch (error) {
+  console.log(error);
 }
 
 app.listen(port, () => console.log(`Server on port: ${port}`))
