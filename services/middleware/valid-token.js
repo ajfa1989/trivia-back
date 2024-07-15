@@ -9,7 +9,8 @@ const valid_token = (req, res, next) => {
     if (!authorization) return res.status(status.not_auth).json(response(false, message.not_auth));
     
     try {
-        jwt.verify(authorization, process.env.TOKEN);
+        const { user } = jwt.verify(authorization, process.env.TOKEN)
+        req.user = user
         next();
     } catch (error) {
         res.status(status.not_auth).json(response(false, message.not_jwt));
